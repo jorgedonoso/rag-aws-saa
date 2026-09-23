@@ -28,4 +28,23 @@ app.MapGet("/ingest", async (
     });
 });
 
+app.MapGet("/search", async (
+    string q,
+    EmbeddingService embeddings,
+    DatabaseService database) =>
+{
+    if (string.IsNullOrWhiteSpace(q))
+        return Results.BadRequest("Query is required.");
+
+    var queryEmbedding = await embeddings.GenerateAsync(q);
+
+    var results = await database.SearchAsync(queryEmbedding);
+
+    return Results.Ok(new
+    {
+        Query = q,
+        Results = results
+    });
+});
+
 app.Run();
