@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<IngestionService>();
 builder.Services.AddSingleton<DatabaseService>();
 builder.Services.AddSingleton<EmbeddingService>();
+builder.Services.AddSingleton<AnswerService>();
 
 var app = builder.Build();
 
@@ -44,6 +45,34 @@ app.MapGet("/search", async (
     {
         Query = q,
         Results = results
+    });
+});
+
+app.MapGet("/ask", async (
+    string q,
+    EmbeddingService embeddings,
+    DatabaseService database,
+    AnswerService answer) =>
+{
+    if (string.IsNullOrWhiteSpace(q))
+        return Results.BadRequest("Query is required.");
+
+    var queryEmbedding = await embeddings.GenerateAsync(q);
+
+    var chunks = await database.SearchAsync(queryEmbedding);
+
+    var response = await answer.GenerateAsync(q, chunks);
+
+    return Results.Ok(new
+    {
+        Question = q,
+        Answer = response,
+        Sources = chunks.Select(x => new
+        {
+            x.FilePath,
+            x.Section,
+            x.ChunkIndex
+        })
     });
 });
 
