@@ -48,6 +48,14 @@ public class DatabaseService
     {
         await using var connection = await _dataSource.OpenConnectionAsync();
 
+        await using var deleteCommand = connection.CreateCommand();
+
+        deleteCommand.CommandText = """
+            TRUNCATE TABLE document_chunks;
+            """;
+
+        await deleteCommand.ExecuteNonQueryAsync();
+
         foreach (var chunk in chunks)
         {
             var vector = await embeddings.GenerateAsync(chunk.Content);
