@@ -85,12 +85,13 @@ Example response:
 }
 ```
 
+## Configuration
 
-## Environment Variables
+Add these User Secrets:
 
 ```bash
-export ConnectionStrings__RagDatabase='...'
-export OPENAI_API_KEY='...'
+dotnet user-secrets set "ConnectionStrings:RagDatabase" "..."
+dotnet user-secrets set "OpenAI:ApiKey" "..."
 ```
 
 ## Author

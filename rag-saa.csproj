@@ -1,10 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>rag_saa</RootNamespace>
+    <UserSecretsId>a60e60c3-6932-49a7-89ef-0b57be661cb9</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

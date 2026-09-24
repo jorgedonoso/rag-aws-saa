@@ -6,9 +6,9 @@ public class EmbeddingService
 {
     private readonly EmbeddingClient _client;
 
-    public EmbeddingService()
+    public EmbeddingService(IConfiguration configuration)
     {
-        var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY")
+        var apiKey = configuration["OpenAI:ApiKey"]
             ?? throw new InvalidOperationException("OPENAI_API_KEY is not set.");
 
         _client = new EmbeddingClient(

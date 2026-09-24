@@ -6,9 +6,9 @@ public class AnswerService
 {
     private readonly ChatClient _client;
 
-    public AnswerService()
+    public AnswerService(IConfiguration configuration)
     {
-        var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY")
+        var apiKey = configuration["OpenAI:ApiKey"]
             ?? throw new InvalidOperationException("OPENAI_API_KEY is not set.");
 
         _client = new ChatClient(
